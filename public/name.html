@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>draw</title>
+    <style type="text/css">
+      body
+      {
+          padding: 10px;
+          margin: 0;
+      }
+      #biaotilan
+      {
+          width: 1666;
+          margin: 40px;
+          margin: 0;
+          padding: 0;
+          height: 200px;
+      }
+      #gongnenglan
+      {
+          width: 15%;
+          overflow: hidden;
+          height: 585px;
+          float: left;
+          margin-right:50px;
+      }
+      #ditukuang
+      {
+          height: 450px;
+          width: 60%;
+          float: left;
+          border-width:0px;
+          margin-left:50px;
+      }
+
+      input[type="file"]{
+       color:transparent;
+       font-size: 30px;
+       opacity: 0;
+       position: absolute;
+      }
+
+
+       #biaotilan{margin:2px;text-align:center;}
+       #ditukuang{border-style:solid;border-width:2px;border-color:Blue;margin:2px;}
+      h2:hover{text-decoration:underline;color:Black;}
+      #gongneng:hover {height:80px;background-color:#CCCCCC;border-width:3px;border-color:Blue;margin:2px;font-size:x-large;}
+      #gongneng{height:55px;background-color:#FFFAF0;font-size:large;border-style:solid;border-width:2px;border-color:Blue;}
+
+
+
+  </style>
+    <script type="text/javascript">
+        var adress;
+        var line1= new line();
+        
+        function point(id,x,y,angle,scale)
+        {
+            this.id=id;
+            this.x=x;
+            this.y=y;
+            this.angle=angle;
+            this.scale=scale;
+        }                                //点结构
+        
+        function line(points)
+        {
+           var i=0;
+           this.points = new Array(30);
+           for (;i<100;i++)
+           {
+              this.points[i]= new point();
+           }
+
+        }                               //线结构
+
+        
+
+
+
+  function readText(canvas_id) {
+    if(canvas_id==1)
+      var file=document.getElementById("file").files[0];
+     else if(canvas_id==2)
+     var file=document.getElementById("file2").files[0];
+      var reader=new FileReader();
+      var i=0;
+      reader.readAsText(file);
+      reader.onload=function(data)
+      {
+        var tt=document.getElementById("tt")
+        //this.result[0];
+        var num=0;
+        var j=-4;
+        var flag=0;
+
+       while(this.result[j+1]!='e'||this.result[j+4]!='e')
+       {
+        var a=0;
+        j=j+3;
+        i=0;
+        while(line1.points[a].id!=null)
+        {
+          line1.points[a].id=null;
+          line1.points[a].x=null;
+          line1.points[a].y=null;
+          a++;
+        }
+       while(this.result[j+1]!='e')
+        {
+          var a="";
+          j++;
+          while(this.result[j]!=','&&this.result[j]!='e')
+          {
+            a=a+this.result[j];
+            j++;
+          }
+          if(flag==0)
+          line1.points[i].id=a;
+          else if(flag==1)
+          line1.points[i].x=a;
+          else if(flag==2)
+          {
+          line1.points[i].y=a;
+          flag=-1;
+          i++;
+          }
+          flag++;
+
+         // num=num+6;
+        }
+       draw(canvas_id);
+       }
+
+      }    
+    }
+
+function draw(canvas_id)
+{
+  //var element = document.getElementById("div1");
+      //创建段落
+     // var canvas = document.createElement("canvas");
+     if(canvas_id==1)
+      var canvas=document.getElementById("myCanvas");
+     else if(canvas_id==2)
+     var canvas=document.getElementById("myCanvas2");
+     // canvas.width  = 500; 
+     // canvas.height = 300; 
+      var ctx = canvas.getContext("2d");//返回一个二维的绘画环境
+      var i=0
+
+
+      ctx.beginPath();
+      while(line1.points[i+1].id!=null)
+      {
+      ctx.moveTo(line1.points[i].x,line1.points[i].y);
+      ctx.lineTo(line1.points[i+1].x,line1.points[i+1].y);
+      ctx.strokeStyle="black"
+      ctx.lineWidth=5;
+      ctx.stroke();                    //stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。
+    
+      i++;
+      }
+      ctx.closePath();
+      //element.appendChild(canvas);
+
+}
+
+function draw_fangge()
+{
+  var canvas=document.getElementById("myCanvas");
+  var ctx = canvas.getContext("2d");//返回一个二维的绘画环境
+  var a;
+  ctx.lineWidth=1;
+  for(a=0;a<=canvas.clientWidth;a=a+20)
+  {
+  ctx.moveTo(a,0);
+  ctx.lineTo(a,canvas.clientHeight);
+  ctx.strokeStyle="blue"
+  ctx.stroke();                    //stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。
+  }
+
+  for(a=0;a<=canvas.clientWidth;a=a+20)
+  {
+  ctx.moveTo(0,a);
+  ctx.lineTo(canvas.clientHeight,a);
+  ctx.stroke();                    //stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。
+  }
+
+  var canvas=document.getElementById("myCanvas2");
+  var ctx = canvas.getContext("2d");//返回一个二维的绘画环境
+  var a;
+
+  ctx.beginPath();
+  ctx.lineWidth=1;
+  for(a=0;a<=canvas.clientWidth;a=a+20)
+  {
+  ctx.moveTo(a,0);
+  ctx.lineTo(a,canvas.clientHeight);
+  ctx.strokeStyle="blue"
+  ctx.stroke();                    //stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。
+  }
+
+  for(a=0;a<=canvas.clientWidth;a=a+20)
+  {
+  ctx.moveTo(0,a);
+  ctx.lineTo(canvas.clientHeight,a);
+  ctx.stroke();                    //stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。
+  }
+  ctx.closePath();
+}
+        
+   function clear_canvas()
+        {
+      var canvas=document.getElementById("myCanvas");
+
+     var canvas2=document.getElementById("myCanvas2");
+     // canvas.width  = 500; 
+     // canvas.height = 300; 
+      var ctx = canvas.getContext("2d");//返回一个二维的绘画环境
+      var ctx2 = canvas2.getContext("2d");//返回一个二维的绘画环境
+      ctx.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
+      ctx2.clearRect(0,0,canvas2.clientWidth,canvas2.clientHeight);
+      draw_fangge();
+        }
+             </script>
+
+</head>
+<body onload="draw_fangge()">
+
+    <div id="biaotilan";>
+        <img  src="F:\学习\大三上\gis算法\name\yourname.jpg"
+                 alt="南京师范大学" style="height: 200px; width:80%" />
+         </div>
+     
+         </br>
+         </br>
+     
+         <div style="width:11%;height:585px;float:left;"> </div>
+     
+         <div id="gongnenglan">
+             <div id="gongneng">
+               
+                <span style="font-family:宋体 Std L;color:#008B8B;font-style:normal;text-align:center;"> <input type="file" id="file"/><p style="text-align:center;">选择姓氏文件</p></span>
+             </div>
+             <div id="gongneng">             
+                <input type="button" onclick="readText(1)" value="显示" style="height:100%;width:100%">
+             </div>
+             <div id="gongneng">
+                <span style="font-family:宋体 Std L;color:#008B8B;font-style:normal;text-align:center;"> <input type="file" id="file2"/><p style="text-align:center;">选择名号文件</p></span>
+             </div>
+             <div id="gongneng" >
+                <input type="button" onclick="readText(2)" value="显示" style="height:100%;width:100%">
+             </div>  
+             <div id="gongneng"  >
+                <input type="button" onclick="clear_canvas()" value="清除" style="height:100%;width:100%">
+             </div>  
+         </div>
+     
+     
+         <div id="ditukuang">
+            <canvas id="myCanvas" width="320" height="320" style="float:left;margin:70px;"></canvas>
+            <canvas id="myCanvas2" width="320" height="320" style="float:left;margin:70px;"></canvas>
+         </div>
+<div>
+
+
+</div>
+</body>
+
+</html>
